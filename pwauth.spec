@@ -25,10 +25,12 @@ BuildArch:	x86_64
 rm -rf $RPM_BUILD_ROOT
 sed -i "s/\/\* #define PAM\t/#define PAM/g" config.h
 sed -i "s/#define SHADOW_SUN/\/\* #define SHADOW_SUN/g" config.h
+sed -i "s/#define SERVER_UIDS 30/#define SERVER_UIDS 302,510/g" config.h
+sed -i "s/#define MIN_UNIX_UID 500/#define MIN_UNIX_UID 300/g" config.h
 sed -i "s/LIB= -lcrypt/LIB= -lpam/g" Makefile
 make
 mkdir -p %{buildroot}%{_prefix}
-%__install -D -m6750 pwauth "%{buildroot}%{_prefix}"
+%__install -D -m6755 pwauth "%{buildroot}%{_prefix}"
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -37,7 +39,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%attr(6750,root,root) %{_prefix}/pwauth
+%attr(6755,root,root) %{_prefix}/pwauth
 
 %changelog
 * Tue Feb 14 2012 Jean-Francois Roche <jfroche@affinitic.be>
